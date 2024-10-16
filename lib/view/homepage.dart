@@ -1,6 +1,7 @@
 //homepage.dart
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:movieapp/view/profilepage.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -88,6 +89,19 @@ class _HomeScreenState extends State<HomeScreen> {
         getMoviesForSelectedCategory(); // Get movies based on category
 
     return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            },
+          ),
+        ],
+      ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(
