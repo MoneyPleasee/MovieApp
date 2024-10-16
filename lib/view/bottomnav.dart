@@ -16,11 +16,10 @@ class BottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
         BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Saved'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
       selectedItemColor: const Color.fromARGB(255, 248, 247, 247),
       unselectedItemColor: const Color.fromARGB(255, 151, 151, 151),
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 82, 4, 4),
     );
   }
 }
