@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'view/homepage.dart';
+import 'view/savedpage.dart';
+import 'view/profilepage.dart';
+import 'view/loginpage.dart'; 
+import 'view/bottomnav.dart'; 
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _selectedIndex = 0; // Track the currently selected bottom navigation index
+  bool _isLoggedIn = false; // Track if the user is logged in
+
+  // List of screens to navigate between when logged in
+  final List<Widget> _screens = [
+    HomeScreen(),       
+    SavedMoviesScreen(), 
+    ProfilePage(),       
+  ];
+
+  // Handle bottom navigation bar item taps
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  // Trigger login and switch to the main app screen
+  void _login() {
+    setState(() {
+      _isLoggedIn = true; 
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Movie Review App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.black,
+      ),
+      // Show login page if not logged in, otherwise show main app
+      home: _isLoggedIn ? _buildMainPage() : LoginPage(onLogin: _login), 
+    );
+  }
+
+  // Build the main page with bottom navigation bar
+  Widget _buildMainPage() {
+    return Scaffold(
+      body: _screens[_selectedIndex], // Display the selected screen
+      bottomNavigationBar: BottomNavBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,  // Handle bottom navigation taps
+      ),
+    );
+  }
+}

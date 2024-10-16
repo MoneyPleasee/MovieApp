@@ -1,0 +1,121 @@
+<?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Allow from any origin
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
+// Existing PHP code
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "movie_app_db";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Get the JSON data from the Flutter app
+$post_data = file_get_contents("php://input");
+$request = json_decode($post_data);
+
+// Check if the JSON decoding was successful
+if (json_last_error() !== JSON_ERROR_NONE) {
+    die("JSON decode error: " . json_last_error_msg());
+}
+
+$username = $request->username ?? '';
+$password = md5($request->password ?? ''); // MD5 hash to match stored password
+
+// Prepare and execute the SQL query
+$sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $password);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Check the result and return the appropriate response
+if ($result->num_rows > 0) {
+    $response = array('status' => 'success', 'message' => 'Login successful');
+} else {
+    $response = array('status' => 'error', 'message' => 'Invalid credentials');
+}
+
+echo json_encode($response);
+
+// Get all items
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $sql = "SELECT * FROM items";
+    $result = $conn->query($sql);
+    $items = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $items[] = $row;
+    }
+
+    echo json_encode($items);
+}
+
+// Create item
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $item_name = $data['item_name'];
+    $description = $data['description'];
+    $price = $data['price'];
+    $image_url = $data['image_url'];
+
+    $sql = "INSERT INTO items (item_name, description, price, image_url) 
+VALUES ('$item_name', '$description', '$price', '$image_url')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(['id' => $conn->insert_id]);
+    } else {
+        echo json_encode(['error' => $conn->error]);
+    }
+}
+
+// Update item
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['id'];
+    $item_name = $data['item_name'];
+    $description = $data['description'];
+    $price = $data['price'];
+    $image_url = $data['image_url'];
+
+    $sql = "UPDATE items SET item_name='$item_name', 
+description='$description', price='$price', image_url='$image_url' WHERE 
+id='$id'";
+
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(['message' => 'Item updated successfully']);
+    } else {
+        echo json_encode(['error' => $conn->error]);
+    }
+}
+
+// Delete item
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['id'];
+
+    $sql = "DELETE FROM items WHERE id='$id'";
+
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(['message' => 'Item deleted successfully']);
+    } else {
+        echo json_encode(['error' => $conn->error]);
+    }
+}
+
+
+// Close the statement and connection
+$stmt->close();
+$conn->close();
+?>
