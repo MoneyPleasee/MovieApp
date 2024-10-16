@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'view/homepage.dart';
 import 'view/savedpage.dart';
-import 'view/profilepage.dart';
 import 'view/loginpage.dart';
 import 'view/bottomnav.dart';
 import 'view/searchscreen.dart';
+
+//flutter run -d chrome --web-browser-flag "--disable-web-security"
 
 void main() {
   runApp(MyApp());
@@ -25,7 +26,6 @@ class _MyAppState extends State<MyApp> {
     HomeScreen(),
     SearchScreen(),
     SavedMoviesScreen(),
-    ProfilePage(),
   ];
 
   // Handle bottom navigation bar item taps
