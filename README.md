@@ -2,7 +2,7 @@
 
 Gubguban, Yvanne
 Mercado John Louis
-Paras. Joseph Yohan
+Paras, Joseph Yohan
 Sampang, Denzel
 Serrano, Aidan 
 Sicat, James Russel 
