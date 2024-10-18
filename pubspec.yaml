@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8
+  http: ^1.2.2
   video_player: ^2.4.5
   youtube_player_flutter: ^8.0.0
   webview_flutter: ^4.0.0
@@ -21,33 +22,32 @@ flutter:
   uses-material-design: true
 
   assets:
-     assets:
-    - lib/assets/general_1.jpg
-    - lib/assets/general_2.jpg
-    - lib/assets/general_3.jpg
-    - lib/assets/general_4.jpg
-    - lib/assets/general_5.jpg
-    - lib/assets/soc_1.jpg
-    - lib/assets/soc_2.jpg
-    - lib/assets/soc_3.jpg
-    - lib/assets/sea_1.jpg
-    - lib/assets/sea_2.jpg
-    - lib/assets/sea_3.jpg
-    - lib/assets/sba_1.jpg
-    - lib/assets/sba_2.jpg
-    - lib/assets/sba_3.jpg
-    - lib/assets/feat_1.jpg
-    - lib/assets/feat_2.jpg
-    - lib/assets/feat_3.jpg
-    - lib/assets/feat_4.jpg
-    - lib/assets/feat_5.jpg
-    - lib/assets/st_1.jpg
-    - lib/assets/st_2.jpg
-    - lib/assets/st_3.jpg
-    - lib/assets/st_4.jpg
-    - lib/assets/st_5.jpg
-    - lib\assets\applogo.png
-    - lib/assets/applogo2.png
+  - lib/assets/general_1.jpg
+  - lib/assets/general_2.jpg
+  - lib/assets/general_3.jpg
+  - lib/assets/general_4.jpg
+  - lib/assets/general_5.jpg
+  - lib/assets/soc_1.jpg
+  - lib/assets/soc_2.jpg
+  - lib/assets/soc_3.jpg
+  - lib/assets/sea_1.jpg
+  - lib/assets/sea_2.jpg
+  - lib/assets/sea_3.jpg
+  - lib/assets/sba_1.jpg
+  - lib/assets/sba_2.jpg
+  - lib/assets/sba_3.jpg
+  - lib/assets/feat_1.jpg
+  - lib/assets/feat_2.jpg
+  - lib/assets/feat_3.jpg
+  - lib/assets/feat_4.jpg
+  - lib/assets/feat_5.jpg
+  - lib/assets/st_1.jpg
+  - lib/assets/st_2.jpg
+  - lib/assets/st_3.jpg
+  - lib/assets/st_4.jpg
+  - lib/assets/st_5.jpg
+  - lib\assets\applogo.png
+  - lib/assets/applogo2.png
 
 dev_dependencies:
   flutter_test:
