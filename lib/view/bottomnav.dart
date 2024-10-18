@@ -14,12 +14,12 @@ class BottomNavBar extends StatelessWidget {
       onTap: onItemTapped,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
         BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Saved'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
       selectedItemColor: const Color.fromARGB(255, 248, 247, 247),
-      unselectedItemColor: const Color.fromARGB(255, 151, 151, 151),
-      backgroundColor: const Color.fromARGB(255, 82, 4, 4),
+      unselectedItemColor: const Color.fromARGB(255, 59, 59, 59),
+      backgroundColor: const Color.fromARGB(255, 2, 2, 2),
     );
   }
 }
