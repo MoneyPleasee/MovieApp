@@ -1,35 +1,45 @@
-//loginpage.dart
 import 'package:flutter/material.dart';
 import '../controller/app_controller.dart';
 import '../model/model.dart';
-import 'signuppage.dart';
 
-class LoginPage extends StatefulWidget {
-  final VoidCallback onLogin;
+class SignUpPage extends StatefulWidget {
+  final VoidCallback onSignUp;
 
-  LoginPage({required this.onLogin});
+  SignUpPage({required this.onSignUp});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final LoginController _loginController = LoginController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final SignUpController _signUpController = SignUpController();
 
-  Future<void> _login() async {
-    User user = User(
+  Future<void> _signUp() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Passwords do not match.')),
+      );
+      return;
+    }
+
+    User newUser = User(
       username: _usernameController.text,
       password: _passwordController.text,
+      // email: _emailController.text,
     );
-    bool success = await _loginController.login(user);
+
+    bool success = await _signUpController.signUp(newUser);
 
     if (success) {
-      widget.onLogin();
+      widget.onSignUp();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed. Please try again.')),
+        SnackBar(content: Text('Sign up failed. Please try again.')),
       );
     }
   }
@@ -37,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, // Add this to avoid overflow
+      resizeToAvoidBottomInset: true,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -53,8 +63,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 100), // Add some top space to center content
-                // Logo at the top
+                SizedBox(height: 100),
                 Center(
                   child: Image.asset(
                     'lib/assets/applogo2.png',
@@ -62,9 +71,9 @@ class _LoginPageState extends State<LoginPage> {
                     height: 120,
                   ),
                 ),
-                SizedBox(height: 40), // Space between logo and welcome text
+                SizedBox(height: 40),
                 Text(
-                  'Welcome to CINEMUST',
+                  'Create Your Account',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 32,
@@ -72,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24), // Space between welcome text and fields
+                SizedBox(height: 24),
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
@@ -89,7 +98,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   style: TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 16), // Space between username and password
+                SizedBox(height: 16),
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    hintStyle: TextStyle(color: Colors.white70),
+                    filled: true,
+                    fillColor: Colors.white12,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 16),
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
@@ -107,9 +133,27 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   style: TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 24), // Space between password and login button
+                SizedBox(height: 16),
+                TextField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Confirm Password',
+                    hintStyle: TextStyle(color: Colors.white70),
+                    filled: true,
+                    fillColor: Colors.white12,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: _login, // Trigger the onLogin callback
+                  onPressed: _signUp,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16.0),
                     backgroundColor: Colors.blueAccent,
@@ -118,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   child: Text(
-                    'LOGIN',
+                    'SIGN UP',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -126,25 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16), // Space between login and sign up button
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SignUpPage(
-                                onSignUp: () {
-                                  Navigator.pop(context);
-                                },
-                              )),
-                    );
-                  },
-                  child: Text(
-                    'Don’t have an account? Sign up here',
-                    style: TextStyle(color: Colors.blueAccent, fontSize: 16),
-                  ),
-                ),
-                SizedBox(height: 24), // Space at the bottom
+                SizedBox(height: 24),
               ],
             ),
           ),
