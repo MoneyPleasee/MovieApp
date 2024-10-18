@@ -12,36 +12,40 @@ dependencies:
     sdk: flutter
   carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8
-  http: ^1.2.2
-  image_picker: ^0.8.4
-  cached_network_image: ^3.2.0
-
+  video_player: ^2.4.5
+  youtube_player_flutter: ^8.0.0
+  webview_flutter: ^4.0.0
+  url_launcher: ^6.0.0
+  
 flutter:
   uses-material-design: true
 
   assets:
-    - lib/assets/s-l1600.webp
-    - lib/assets/deadpool_and_wolverine_ver6_xlg.jpg
-    - lib/assets/despicable_me_four_xlg.jpg
-    - lib/assets/inside_out_two_ver2_xlg.jpg
-    - lib/assets/smile_two_ver2_xlg.jpg
-    - lib\assets\landscape-poster-3_orig.jpg
-    - lib\assets\s-l960.webp
-    - lib\assets\blink.jpg
-    - lib\assets\crow_ver3.jpg
-    - lib\assets\joker_folie_a_deux_ver6.jpg
-    - lib\assets\thor_ragnarok_ver2.jpg
-    - lib\assets\wicked_ver4.jpg
-    - lib\assets\john_wick_chapter_four_ver2.jpg
-    - lib\assets\godzilla_minus_one_ver10.jpg
-    - lib\assets\twenty_seventy_three.jpg
-    - lib\assets\mistake.jpg
-    - lib\assets\minecraft_the_movie.jpg
-    - lib\assets\killers_game_ver5.jpg
-    - lib\assets\it_ends_with_us.jpg
-    - lib\assets\alien_romulus_ver2.jpg
-    - lib\assets\Cid_29.webp
-    - lib\assets\skyfall-movie-poster-james-bond-daniel-craig-2012.jpg
+     assets:
+    - lib/assets/general_1.jpg
+    - lib/assets/general_2.jpg
+    - lib/assets/general_3.jpg
+    - lib/assets/general_4.jpg
+    - lib/assets/general_5.jpg
+    - lib/assets/soc_1.jpg
+    - lib/assets/soc_2.jpg
+    - lib/assets/soc_3.jpg
+    - lib/assets/sea_1.jpg
+    - lib/assets/sea_2.jpg
+    - lib/assets/sea_3.jpg
+    - lib/assets/sba_1.jpg
+    - lib/assets/sba_2.jpg
+    - lib/assets/sba_3.jpg
+    - lib/assets/feat_1.jpg
+    - lib/assets/feat_2.jpg
+    - lib/assets/feat_3.jpg
+    - lib/assets/feat_4.jpg
+    - lib/assets/feat_5.jpg
+    - lib/assets/st_1.jpg
+    - lib/assets/st_2.jpg
+    - lib/assets/st_3.jpg
+    - lib/assets/st_4.jpg
+    - lib/assets/st_5.jpg
     - lib\assets\applogo.png
     - lib/assets/applogo2.png
 
