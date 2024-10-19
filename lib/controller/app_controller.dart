@@ -7,7 +7,7 @@ class LoginController {
   Future<bool> login(User user) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/movieappapi.php'),
+        Uri.parse('http://localhost/movieappapi.php?action=login'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(user.toJson()),
       );
@@ -34,7 +34,7 @@ class SignUpController {
   Future<bool> signUp(User user) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/movieappapi.php?signup=true'),
+        Uri.parse('http://localhost/movieappapi.php?action=register'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(user.toJson()),
       );

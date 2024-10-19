@@ -1,0 +1,104 @@
+<?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Allow from any origin
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+
+// Database connection parameters
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "movie_app_db";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die(json_encode(array('status' => 'error', 'message' => 'Connection failed: ' . $conn->connect_error)));
+}
+
+// Function to handle user registration
+function registerUser($conn) {
+    $post_data = file_get_contents("php://input");
+    $request = json_decode($post_data);
+
+    $username = $request->username ?? '';
+    $password = md5($request->password ?? ''); // Use a more secure hash in production
+
+    $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $username, $password);
+
+    if ($stmt->execute()) {
+        $response = array('status' => 'success', 'message' => 'Registration successful');
+    } else {
+        $response = array('status' => 'error', 'message' => 'Registration failed: ' . $stmt->error);
+    }
+
+    echo json_encode($response);
+    $stmt->close();
+}
+
+// Function to handle user login
+function loginUser($conn) {
+    $post_data = file_get_contents("php://input");
+    $request = json_decode($post_data);
+
+    $username = $request->username ?? '';
+    $password = md5($request->password ?? ''); // Use a more secure hash in production
+
+    $sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $username, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $response = array('status' => 'success', 'message' => 'Login successful');
+    } else {
+        $response = array('status' => 'error', 'message' => 'Invalid credentials');
+    }
+
+    echo json_encode($response);
+    $stmt->close();
+}
+
+// Function to fetch movies
+function fetchMovies($conn) {
+    $sql = "SELECT * FROM movies";
+    $result = $conn->query($sql);
+
+    $movies = array();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $movies[] = $row;
+        }
+        $response = array('status' => 'success', 'data' => $movies);
+    } else {
+        $response = array('status' => 'error', 'message' => 'No movies found');
+    }
+
+    echo json_encode($response);
+}
+
+// Determine the request method and call the appropriate function
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check for the specific action based on the incoming request
+    if (isset($_GET['action']) && $_GET['action'] === 'register') {
+        registerUser($conn);
+    } elseif (isset($_GET['action']) && $_GET['action'] === 'login') {
+        loginUser($conn);
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'fetch_movies') {
+    fetchMovies($conn);
+}
+
+// Close the database connection
+$conn->close();
+?>
