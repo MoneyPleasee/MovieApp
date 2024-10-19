@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   final List<Widget> _screens = [
     HomeScreen(),
     SearchScreen(),
-    SavedMoviesScreen(),
+    ProfileApp(),
   ];
 
   // Handle bottom navigation bar item taps
