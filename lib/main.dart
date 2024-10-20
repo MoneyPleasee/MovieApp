@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   // List of screens to navigate between when logged in
   final List<Widget> _screens = [
     HomeScreen(),
-    SearchScreen(),
+    SavedMoviesScreen(),
     ProfilePage(),
   ];
 
