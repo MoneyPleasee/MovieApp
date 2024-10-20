@@ -7,6 +7,7 @@ ini_set('display_errors', 1);
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
 // Database connection parameters
 $servername = "localhost";
@@ -29,14 +30,10 @@ function registerUser($conn) {
 
     $username = $request->username ?? '';
     $password = md5($request->password ?? '');
-    $email = $request->email ?? '';
-    $fname = $request->fname ?? '';
-    $lname = $request->lname ?? '';
 
-
-    $sql = "INSERT INTO users (username, password, email, fname, lname) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $username, $password, $email, $fname, $lname);
+    $stmt->bind_param("ss", $username, $password);
 
     if ($stmt->execute()) {
         $response = array('status' => 'success', 'message' => 'Registration successful');
@@ -100,6 +97,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'fetch_movies') {
     fetchMovies($conn);
 }
+
+// Check if username is provided
+if (isset($_GET['username'])) {
+    $username = $conn->real_escape_string($_GET['username']);
+    
+    // Prepare SQL statement
+    $sql = "SELECT username,fname,lname,email FROM users WHERE username = ?";
+    
+    // Prepare and bind
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    
+    // Execute the statement
+    $stmt->execute();
+    
+    // Get the result
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        // Fetch the user data
+        $user = $result->fetch_assoc();
+        
+        // Convert to JSON and output
+        header('Content-Type: application/json');
+        echo json_encode($user);
+    } else {
+        // No user found
+        header('HTTP/1.0 404 Not Found');
+        echo json_encode(["error" => "User not found"]);
+    }
+    
+    // Close statement
+    $stmt->close();
+} else {
+    // Username not provided
+    header('HTTP/1.0 400 Bad Request');
+    echo json_encode(["error" => "Username not provided"]);
+}
+
 
 $conn->close();
 ?>
