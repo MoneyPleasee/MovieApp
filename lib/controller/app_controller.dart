@@ -1,4 +1,4 @@
-//CONTROLLER
+// CONTROLLER
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../model/model.dart';
@@ -12,16 +12,18 @@ class LoginController {
         body: jsonEncode(user.toJson()),
       );
 
-      // Log the response for debugging
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
-      final responseData = jsonDecode(response.body);
-
-      if (responseData['status'] == 'success') {
-        return true;
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        if (responseData['status'] == 'success') {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        throw Exception('Login failed with status: ${response.statusCode}');
       }
     } catch (e) {
       print('Error: $e');
@@ -42,12 +44,15 @@ class SignUpController {
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
-      final responseData = jsonDecode(response.body);
-
-      if (responseData['status'] == 'success') {
-        return true;
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        if (responseData['status'] == 'success') {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        throw Exception('Sign up failed with status: ${response.statusCode}');
       }
     } catch (e) {
       print('Error during sign up: $e');
@@ -67,17 +72,21 @@ class MovieController {
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
-      final responseData = jsonDecode(response.body);
-
-      if (responseData['status'] == 'success') {
-        List<Movie> movies = [];
-        for (var movieData in responseData['data']) {
-          Movie movie = Movie.fromJson(movieData);
-          movies.add(movie);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        if (responseData['status'] == 'success') {
+          List<Movie> movies = [];
+          for (var movieData in responseData['data']) {
+            Movie movie = Movie.fromJson(movieData);
+            movies.add(movie);
+          }
+          return movies;
+        } else {
+          return [];
         }
-        return movies;
       } else {
-        return [];
+        throw Exception(
+            'Failed to fetch movies with status: ${response.statusCode}');
       }
     } catch (e) {
       print('Error: $e');

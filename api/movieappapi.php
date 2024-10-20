@@ -28,7 +28,7 @@ function registerUser($conn) {
     $request = json_decode($post_data);
 
     $username = $request->username ?? '';
-    $password = md5($request->password ?? ''); // Use a more secure hash in production
+    $password = md5($request->password ?? '');
 
     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
@@ -50,7 +50,7 @@ function loginUser($conn) {
     $request = json_decode($post_data);
 
     $username = $request->username ?? '';
-    $password = md5($request->password ?? ''); // Use a more secure hash in production
+    $password = md5($request->password ?? '');
 
     $sql = "SELECT * FROM users WHERE username = ? AND password = ?";
     $stmt = $conn->prepare($sql);
@@ -87,9 +87,7 @@ function fetchMovies($conn) {
     echo json_encode($response);
 }
 
-// Determine the request method and call the appropriate function
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check for the specific action based on the incoming request
     if (isset($_GET['action']) && $_GET['action'] === 'register') {
         registerUser($conn);
     } elseif (isset($_GET['action']) && $_GET['action'] === 'login') {
@@ -99,6 +97,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     fetchMovies($conn);
 }
 
-// Close the database connection
 $conn->close();
 ?>

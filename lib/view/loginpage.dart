@@ -16,11 +16,17 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _fnameController = TextEditingController();
+  final TextEditingController _lnameController = TextEditingController();
   final LoginController _loginController = LoginController();
 
   Future<void> _login() async {
     User user = User(
+      fname: _fnameController.text,
+      lname: _lnameController.text,
       username: _usernameController.text,
+      email: _emailController.text,
       password: _passwordController.text,
     );
     bool success = await _loginController.login(user);
@@ -53,8 +59,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 100), // Add some top space to center content
-                // Logo at the top
+                SizedBox(height: 100),
                 Center(
                   child: Image.asset(
                     'lib/assets/applogo2.png',
@@ -72,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24), // Space between welcome text and fields
+                SizedBox(height: 24),
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
@@ -107,9 +112,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   style: TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 24), // Space between password and login button
+                SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: _login, // Trigger the onLogin callback
+                  onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16.0),
                     backgroundColor: Colors.blueAccent,

@@ -5,7 +5,10 @@ USE movie_app_db;
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    password VARCHAR(255)
+    password VARCHAR(255),
+    email VARCHAR(255),
+    fname VARCHAR(255),
+    lname VARCHAR(255)
 );
 
 CREATE TABLE movies (
@@ -14,5 +17,3 @@ CREATE TABLE movies (
     description TEXT,
     image_url VARCHAR(255)
 );
-
-

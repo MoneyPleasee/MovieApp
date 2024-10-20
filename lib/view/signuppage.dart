@@ -14,6 +14,8 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _fnameController = TextEditingController();
+  final TextEditingController _lnameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -28,9 +30,11 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     User newUser = User(
+      fname: _fnameController.text,
+      lname: _lnameController.text,
       username: _usernameController.text,
+      email: _emailController.text,
       password: _passwordController.text,
-      // email: _emailController.text,
     );
 
     bool success = await _signUpController.signUp(newUser);
@@ -86,6 +90,40 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _usernameController,
                   decoration: InputDecoration(
                     hintText: 'Username',
+                    hintStyle: TextStyle(color: Colors.white70),
+                    filled: true,
+                    fillColor: Colors.white12,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _fnameController,
+                  decoration: InputDecoration(
+                    hintText: 'First Name',
+                    hintStyle: TextStyle(color: Colors.white70),
+                    filled: true,
+                    fillColor: Colors.white12,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _lnameController,
+                  decoration: InputDecoration(
+                    hintText: 'Last Name',
                     hintStyle: TextStyle(color: Colors.white70),
                     filled: true,
                     fillColor: Colors.white12,
