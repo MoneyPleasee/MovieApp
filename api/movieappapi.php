@@ -29,10 +29,14 @@ function registerUser($conn) {
 
     $username = $request->username ?? '';
     $password = md5($request->password ?? '');
+    $email = $request->email ?? '';
+    $fname = $request->fname ?? '';
+    $lname = $request->lname ?? '';
 
-    $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+
+    $sql = "INSERT INTO users (username, password, email, fname, lname) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $password);
+    $stmt->bind_param("sssss", $username, $password, $email, $fname, $lname);
 
     if ($stmt->execute()) {
         $response = array('status' => 'success', 'message' => 'Registration successful');
