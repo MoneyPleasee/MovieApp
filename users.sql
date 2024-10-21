@@ -9,6 +9,7 @@ CREATE TABLE users (
     email VARCHAR(255),
     fname VARCHAR(255),
     lname VARCHAR(255)
+    imageURL VARCHAR(255)
 );
 
 CREATE TABLE movies (
