@@ -50,6 +50,7 @@ flutter:
   - lib/assets/st_5.jpg
   - lib\assets\applogo.png
   - lib/assets/applogo2.png
+  - lib\assets\defaultimage.jpg
 
 dev_dependencies:
   flutter_test:
