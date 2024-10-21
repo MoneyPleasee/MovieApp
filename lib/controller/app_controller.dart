@@ -123,7 +123,8 @@ class UserController {
       throw Exception('Failed to load user');
     }
   }
-    Future<bool> updateUserInfo(UserInfo userInfo) async {
+
+  Future<bool> updateUserInfo(UserInfo userInfo) async {
     try {
       final response = await http.post(
         Uri.parse('$apiUrl?action=update_user'),
