@@ -41,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController _firstnameController;
   late TextEditingController _lastnameController;
   late TextEditingController _emailController;
+  late TextEditingController _imageURLController;
 
   //late TextEditingController _imageURL;
   String _profileImagePath = 'lib/assets/defaultimage.jpg';
@@ -51,6 +52,8 @@ class _ProfilePageState extends State<ProfilePage> {
     _firstnameController = TextEditingController(text: widget.userInfo?.fname);
     _lastnameController = TextEditingController(text: widget.userInfo?.lname);
     _emailController = TextEditingController(text: widget.userInfo?.email);
+    _imageURLController =
+        TextEditingController(text: widget.userInfo?.imageURL);
   }
 
   @override
@@ -58,6 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _firstnameController.dispose();
     _lastnameController.dispose();
     _emailController.dispose();
+    _imageURLController.dispose();
     super.dispose();
   }
 
@@ -102,12 +106,12 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: (widget.userInfo?.imageURL != null &&
-                          widget.userInfo!.imageURL.startsWith('http'))
-                      ? NetworkImage(widget.userInfo!
-                          .imageURL) // Use network image if URL is provided and valid
+                  backgroundImage: (_imageURLController.text.isNotEmpty &&
+                          _imageURLController.text.startsWith('http'))
+                      ? NetworkImage(
+                          _imageURLController.text) // Updated URL after edit
                       : AssetImage(_profileImagePath)
-                          as ImageProvider, // Fallback to default image
+                          as ImageProvider, // Fallback image
                   backgroundColor: Colors.grey,
                 ),
               ],
@@ -133,6 +137,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     _firstnameController.text = updatedInfo.fname;
                     _lastnameController.text = updatedInfo.lname;
                     _emailController.text = updatedInfo.email;
+                    _imageURLController.text = updatedInfo.imageURL;
+                    _profileImagePath = updatedInfo.imageURL.isNotEmpty
+                        ? updatedInfo.imageURL
+                        : 'lib/assets/defaultimage.jpg'; // Fallback to default if URL is empty
                   });
                 }
               },
