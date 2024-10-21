@@ -400,10 +400,10 @@ class _HomeScreenState extends State<HomeScreen> {
             // Movie Carousel Slider
             Padding(
               padding: const EdgeInsets.only(
-                left: 16.0, // Adjust the left padding as needed
-                right: 16.0, // Adjust the right padding as needed
-                top: 20.0, // Adjust the top padding as needed
-                bottom: 0.0, // Adjust the bottom padding as needed
+                left: 16.0,
+                right: 16.0,
+                top: 20.0,
+                bottom: 0.0,
               ),
               child: CarouselSlider(
                 options: CarouselOptions(
@@ -433,8 +433,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Container(
-                                  height:
-                                      200, // Adjust the height of the gradient overlay as needed
+                                  height: 200,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
@@ -705,8 +704,8 @@ class MovieList extends StatelessWidget {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  const Color.fromARGB(255, 7, 7, 7).withOpacity(
-                                      0.8), // Change color and opacity as needed
+                                  const Color.fromARGB(255, 7, 7, 7)
+                                      .withOpacity(0.8),
                                   Colors.transparent,
                                 ],
                                 begin: Alignment.bottomCenter,

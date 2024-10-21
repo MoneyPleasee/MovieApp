@@ -180,7 +180,5 @@ function updateUserInfo($conn) {
     exit;
 }
 
-
-
 $conn->close();
 ?>
