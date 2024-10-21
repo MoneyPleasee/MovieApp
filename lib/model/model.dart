@@ -70,12 +70,14 @@ class UserInfo {
   final String fname;
   final String lname;
   final String email;
+  final String imageURL;
 
   UserInfo({
     required this.username,
     required this.fname,
     required this.lname,
     required this.email,
+    required this.imageURL,
   });
 
   Map<String, dynamic> toJson() {
@@ -84,16 +86,17 @@ class UserInfo {
       'fname': fname,
       'lname': lname,
       'email': email,
+      'image_url': imageURL,
     };
   }
 
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     return UserInfo(
-      username: json['username'],
-      fname: json['fname'],
-      lname: json['lname'],
-      email: json['email'],
-    );
+        username: json['username'],
+        fname: json['fname'],
+        lname: json['lname'],
+        email: json['email'],
+        imageURL: json['imageURL']);
   }
 }
 
@@ -102,17 +105,21 @@ class UserModel with ChangeNotifier {
   String _fname = '';
   String _lname = '';
   String __email = '';
+  String _imageURL = '';
 
   String get username => _username;
   String get fname => _fname;
   String get lname => _lname;
   String get email => __email;
+  String get imageURL => _imageURL;
 
-  void setUser(String username, String fname, String lname, String email) {
+  void setUser(String username, String fname, String lname, String email,
+      String imageURL) {
     _username = username;
     _fname = fname;
     _lname = lname;
     __email = email;
+    _imageURL = imageURL;
     notifyListeners();
   }
 }
