@@ -162,9 +162,10 @@ function updateUserInfo($conn) {
     $fname = $request->fname ?? '';
     $lname = $request->lname ?? '';
     $email = $request->email ?? '';
-    $sql = "UPDATE users SET fname = ?, lname = ?, email = ? WHERE username = ?";
+    $imageURL  = $request->imageURL ?? '';
+    $sql = "UPDATE users SET fname = ?, lname = ?, email = ?, imageURL = ? WHERE username = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $fname, $lname, $email, $username);
+    $stmt->bind_param("sssss", $fname, $lname, $email, $imageURL,$username);
     if ($stmt->execute()) {
         $response = array('status' => 'success', 'message' => 'Profile updated successfully');
     } else {
