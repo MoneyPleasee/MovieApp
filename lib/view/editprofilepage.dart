@@ -1,4 +1,3 @@
-//editprofilepage.dart
 import 'package:flutter/material.dart';
 import 'package:movieapp/model/model.dart';
 import 'package:movieapp/controller/app_controller.dart';
@@ -16,6 +15,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _firstnameController;
   late TextEditingController _lastnameController;
   late TextEditingController _emailController;
+  late TextEditingController _imageURLController;
   final UserController _userController = UserController();
 
   @override
@@ -24,6 +24,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _firstnameController = TextEditingController(text: widget.userInfo.fname);
     _lastnameController = TextEditingController(text: widget.userInfo.lname);
     _emailController = TextEditingController(text: widget.userInfo.email);
+    _imageURLController = TextEditingController(text: widget.userInfo.imageURL);
   }
 
   @override
@@ -31,6 +32,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _firstnameController.dispose();
     _lastnameController.dispose();
     _emailController.dispose();
+    _imageURLController.dispose();
     super.dispose();
   }
 
@@ -59,6 +61,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               controller: _emailController,
               decoration: InputDecoration(labelText: 'Email'),
             ),
+            TextField(
+              controller: _imageURLController,
+              decoration: InputDecoration(labelText: 'Image'),
+            ),
             SizedBox(height: 32),
             ElevatedButton(
               onPressed: () async {
@@ -68,6 +74,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   fname: _firstnameController.text,
                   lname: _lastnameController.text,
                   email: _emailController.text,
+                  imageURL: _imageURLController.text,
                 );
                 bool success =
                     await _userController.updateUserInfo(updatedInfo);
