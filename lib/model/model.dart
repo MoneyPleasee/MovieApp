@@ -86,7 +86,7 @@ class UserInfo {
       'fname': fname,
       'lname': lname,
       'email': email,
-      'image_url': imageURL,
+      'imageURL': imageURL,
     };
   }
 
