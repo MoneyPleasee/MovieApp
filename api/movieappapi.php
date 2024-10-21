@@ -3,10 +3,17 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Allow from any origin
+// Allow from any origin and set CORS headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Handle OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    // Return a 200 OK response for OPTIONS requests
+    http_response_code(200);
+    exit();
+}
 
 // Database connection parameters
 $servername = "localhost";
@@ -33,7 +40,6 @@ function registerUser($conn) {
     $fname = $request->fname ?? '';
     $lname = $request->lname ?? '';
 
-
     $sql = "INSERT INTO users (username, password, email, fname, lname) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssss", $username, $password, $email, $fname, $lname);
@@ -46,6 +52,8 @@ function registerUser($conn) {
 
     echo json_encode($response);
     $stmt->close();
+
+    exit;
 }
 
 // Function to handle user login
@@ -93,56 +101,45 @@ function fetchMovies($conn) {
     echo json_encode($response);
 }
 
+// Process POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['action']) && $_GET['action'] === 'register') {
         registerUser($conn);
     } elseif (isset($_GET['action']) && $_GET['action'] === 'login') {
         loginUser($conn);
     }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'fetch_movies') {
+}
+
+// Process GET requests for fetching movies
+elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'fetch_movies') {
     fetchMovies($conn);
 }
 
-
-// Check if username is provided
+// Fetch user details based on username
 if (isset($_GET['username'])) {
     $username = $conn->real_escape_string($_GET['username']);
     
-    // Prepare SQL statement
     $sql = "SELECT username,fname,lname,email FROM users WHERE username = ?";
-    
-    // Prepare and bind
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
-    
-    // Execute the statement
     $stmt->execute();
-    
-    // Get the result
     $result = $stmt->get_result();
     
     if ($result->num_rows > 0) {
-        // Fetch the user data
         $user = $result->fetch_assoc();
-        
-        // Convert to JSON and output
         header('Content-Type: application/json');
         echo json_encode($user);
     } else {
-        // No user found
         header('HTTP/1.0 404 Not Found');
         echo json_encode(["error" => "User not found"]);
     }
     
-    // Close statement
     $stmt->close();
 } else {
     // Username not provided
     header('HTTP/1.0 400 Bad Request');
     echo json_encode(["error" => "Username not provided"]);
 }
-
-
 
 $conn->close();
 ?>
