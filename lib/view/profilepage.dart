@@ -1,8 +1,8 @@
 //profilepage.dart
 import 'package:flutter/material.dart';
 import 'package:movieapp/model/model.dart';
-import 'package:movieapp/view/editprofilepage.dart';
 import 'package:provider/provider.dart';
+import 'package:movieapp/view/editprofilepage.dart';
 
 // Main app widget
 class ProfileApp extends StatelessWidget {
@@ -41,7 +41,9 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController _firstnameController;
   late TextEditingController _lastnameController;
   late TextEditingController _emailController;
-  String _profileImagePath = 'lib/assets/feat_1.jpg';
+
+  //late TextEditingController _imageURL;
+  String _profileImagePath = 'lib/assets/defaultimage.jpg';
 
   @override
   void initState() {
@@ -100,18 +102,13 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage(_profileImagePath),
+                  backgroundImage: (widget.userInfo?.imageURL != null &&
+                          widget.userInfo!.imageURL.startsWith('http'))
+                      ? NetworkImage(widget.userInfo!
+                          .imageURL) // Use network image if URL is provided and valid
+                      : AssetImage(_profileImagePath)
+                          as ImageProvider, // Fallback to default image
                   backgroundColor: Colors.grey,
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: IconButton(
-                    icon: Icon(Icons.camera_alt, color: Colors.white),
-                    onPressed: () {
-                      // Add functionality to change profile picture when backend dev begins
-                    },
-                  ),
                 ),
               ],
             ),
@@ -123,6 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
+                // Add profile editing functionality when backednd dev begins
                 final updatedInfo = await Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -152,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
               controller: _firstnameController,
             ),
             ProfileInfoCard(
-              icon: Icons.phone,
+              icon: Icons.person,
               label: 'Last Name',
               controller: _lastnameController,
             ),
