@@ -1,6 +1,7 @@
 //profilepage.dart
 import 'package:flutter/material.dart';
 import 'package:movieapp/model/model.dart';
+import 'package:movieapp/view/editprofilepage.dart';
 import 'package:provider/provider.dart';
 
 // Main app widget
@@ -121,12 +122,26 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                // Add profile editing functionality when backednd dev begins
+              onPressed: () async {
+                final updatedInfo = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        EditProfilePage(userInfo: widget.userInfo!),
+                  ),
+                );
+                if (updatedInfo != null) {
+                  setState(() {
+                    _firstnameController.text = updatedInfo.fname;
+                    _lastnameController.text = updatedInfo.lname;
+                    _emailController.text = updatedInfo.email;
+                  });
+                }
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[400]),
-              child: Text('EDIT', style: TextStyle(color: Colors.black)),
+              child:
+                  Text('EDIT PROFILE', style: TextStyle(color: Colors.black)),
             ),
             SizedBox(height: 32),
 

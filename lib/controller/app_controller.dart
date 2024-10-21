@@ -123,4 +123,28 @@ class UserController {
       throw Exception('Failed to load user');
     }
   }
+
+  Future<bool> updateUserInfo(UserInfo userInfo) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$apiUrl?action=update_user'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(userInfo.toJson()),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData['status'] == 'success';
+      } else {
+        throw Exception(
+            'Failed to update user info with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error updating user info: $e');
+      return false;
+    }
+  }
 }

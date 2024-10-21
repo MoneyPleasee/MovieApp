@@ -103,10 +103,23 @@ function fetchMovies($conn) {
 
 // Process POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_GET['action']) && $_GET['action'] === 'register') {
-        registerUser($conn);
-    } elseif (isset($_GET['action']) && $_GET['action'] === 'login') {
-        loginUser($conn);
+    if (isset($_GET['action'])) {
+        switch ($_GET['action']) {
+            case 'register':
+                registerUser($conn);
+                break;
+            case 'login':
+                loginUser($conn);
+                break;
+            case 'update_user':
+                updateUserInfo($conn);
+                break;
+            default:
+                echo json_encode(array('status' => 'error', 'message' => 'Invalid action'));
+                break;
+        }
+    } else {
+        echo json_encode(array('status' => 'error', 'message' => 'No action specified'));
     }
 }
 
@@ -140,6 +153,34 @@ if (isset($_GET['username'])) {
     header('HTTP/1.0 400 Bad Request');
     echo json_encode(["error" => "Username not provided"]);
 }
+
+// Function to handle user profile updates
+function updateUserInfo($conn) {
+    $post_data = file_get_contents("php://input");
+    $request = json_decode($post_data);
+
+    $username = $request->username ?? '';
+    $fname = $request->fname ?? '';
+    $lname = $request->lname ?? '';
+    $email = $request->email ?? '';
+
+    $sql = "UPDATE users SET fname = ?, lname = ?, email = ? WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssss", $fname, $lname, $email, $username);
+
+    if ($stmt->execute()) {
+        $response = array('status' => 'success', 'message' => 'Profile updated successfully');
+    } else {
+        $response = array('status' => 'error', 'message' => 'Profile update failed: ' . $stmt->error);
+    }
+
+    echo json_encode($response);
+    $stmt->close();
+
+    exit;
+}
+
+
 
 $conn->close();
 ?>
