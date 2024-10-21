@@ -158,18 +158,32 @@ if (isset($_GET['username'])) {
 function updateUserInfo($conn) {
     $post_data = file_get_contents("php://input");
     $request = json_decode($post_data);
+
+    error_log(print_r($request, true));
+
+
+     // Validate input
+     if (!isset($request->username) || empty($request->username)) {
+        echo json_encode(array('status' => 'error', 'message' => 'Username is required'));
+        return;
+    }
+
     $username = $request->username ?? '';
     $fname = $request->fname ?? '';
     $lname = $request->lname ?? '';
     $email = $request->email ?? '';
     $imageURL  = $request->imageURL ?? '';
+
     $sql = "UPDATE users SET fname = ?, lname = ?, email = ?, imageURL = ? WHERE username = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $fname, $lname, $email, $imageURL,$username);
+    $stmt->bind_param("sssss", $fname, $lname, $email, $imageURL, $username);
     if ($stmt->execute()) {
         $response = array('status' => 'success', 'message' => 'Profile updated successfully');
     } else {
         $response = array('status' => 'error', 'message' => 'Profile update failed: ' . $stmt->error);
+    }
+    if (!$stmt->execute()) {
+        error_log("MySQL Error: " . $stmt->error);
     }
     echo json_encode($response);
     $stmt->close();
