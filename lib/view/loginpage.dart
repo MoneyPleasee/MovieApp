@@ -1,11 +1,12 @@
 //loginpage.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../controller/app_controller.dart';
 import '../model/model.dart';
 import 'signuppage.dart';
 
 class LoginPage extends StatefulWidget {
-  final VoidCallback onLogin;
+  final Function(String) onLogin;
 
   LoginPage({required this.onLogin});
 
@@ -32,7 +33,13 @@ class _LoginPageState extends State<LoginPage> {
     bool success = await _loginController.login(user);
 
     if (success) {
-      widget.onLogin();
+      Provider.of<UserModel>(context, listen: false).setUser(
+          _usernameController.text,
+          _fnameController.text,
+          _lnameController.text,
+          _emailController.text);
+
+      widget.onLogin(_usernameController.text);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed. Please try again.')),

@@ -1,10 +1,17 @@
 //profilepage.dart
 import 'package:flutter/material.dart';
+import 'package:movieapp/model/model.dart';
+import 'package:provider/provider.dart';
 
 // Main app widget
 class ProfileApp extends StatelessWidget {
+  final UserInfo? userInfo;
+
+  ProfileApp({required this.userInfo});
   @override
   Widget build(BuildContext context) {
+    String username = Provider.of<UserModel>(context).username;
+
     return MaterialApp(
       title: 'Profile Page',
       theme: ThemeData(
@@ -12,26 +19,44 @@ class ProfileApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Color(0xFF1C1B33),
       ),
-      home: ProfilePage(), // Load ProfilePage as the home screen
+      home: ProfilePage(
+          username: username,
+          userInfo: userInfo), // Load ProfilePage as the home screen
     );
   }
 }
 
 // Profile Page
 class ProfilePage extends StatefulWidget {
+  final String username;
+  final UserInfo? userInfo;
+  ProfilePage({required this.username, required this.userInfo});
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   // Controllers to manage the text fields for username, phone, and email. Put on controller folder ones backend development begins
-  final TextEditingController _usernameController =
-      TextEditingController(text: 'IamAtomic');
-  final TextEditingController _phoneController =
-      TextEditingController(text: '1231-456-7890');
-  final TextEditingController _emailController =
-      TextEditingController(text: 'Iamatomic@ani.com');
-  String _profileImagePath = 'lib/assets/Cid_29.webp';
+  late TextEditingController _firstnameController;
+  late TextEditingController _lastnameController;
+  late TextEditingController _emailController;
+  String _profileImagePath = 'lib/assets/feat_1.jpg';
+
+  @override
+  void initState() {
+    super.initState();
+    _firstnameController = TextEditingController(text: widget.userInfo?.fname);
+    _lastnameController = TextEditingController(text: widget.userInfo?.lname);
+    _emailController = TextEditingController(text: widget.userInfo?.email);
+  }
+
+  @override
+  void dispose() {
+    _firstnameController.dispose();
+    _lastnameController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
 
       // Main body with profile details
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -91,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 16),
             Text(
-              'Cid Kagenou', // Static user name display
+              widget.username, // Static user name display
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             SizedBox(height: 16),
@@ -108,13 +133,13 @@ class _ProfilePageState extends State<ProfilePage> {
             // Profile information cards for username, phone, and email
             ProfileInfoCard(
               icon: Icons.person,
-              label: 'Username',
-              controller: _usernameController,
+              label: 'First Name',
+              controller: _firstnameController,
             ),
             ProfileInfoCard(
               icon: Icons.phone,
-              label: 'Phone',
-              controller: _phoneController,
+              label: 'Last Name',
+              controller: _lastnameController,
             ),
             ProfileInfoCard(
               icon: Icons.email,

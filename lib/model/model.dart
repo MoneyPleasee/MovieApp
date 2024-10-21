@@ -1,4 +1,6 @@
 // MODEL
+import 'package:flutter/material.dart';
+
 class User {
   final String username;
   final String password;
@@ -60,5 +62,57 @@ class Movie {
       description: json['description'],
       imageUrl: json['image_url'],
     );
+  }
+}
+
+class UserInfo {
+  final String username;
+  final String fname;
+  final String lname;
+  final String email;
+
+  UserInfo({
+    required this.username,
+    required this.fname,
+    required this.lname,
+    required this.email,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'fname': fname,
+      'lname': lname,
+      'email': email,
+    };
+  }
+
+  factory UserInfo.fromJson(Map<String, dynamic> json) {
+    return UserInfo(
+      username: json['username'],
+      fname: json['fname'],
+      lname: json['lname'],
+      email: json['email'],
+    );
+  }
+}
+
+class UserModel with ChangeNotifier {
+  String _username = '';
+  String _fname = '';
+  String _lname = '';
+  String __email = '';
+
+  String get username => _username;
+  String get fname => _fname;
+  String get lname => _lname;
+  String get email => __email;
+
+  void setUser(String username, String fname, String lname, String email) {
+    _username = username;
+    _fname = fname;
+    _lname = lname;
+    __email = email;
+    notifyListeners();
   }
 }
