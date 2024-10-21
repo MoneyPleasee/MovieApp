@@ -68,7 +68,7 @@ class MovieController {
         Uri.parse('http://localhost/movieappapi.php?fetch_movies=true'),
       );
 
-      //debugging
+      // Log the response for debugging
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
@@ -101,11 +101,12 @@ class UserController {
   Future<UserInfo?> fetchUserByUsername(String username) async {
     final response = await http.get(Uri.parse('$apiUrl?username=$username'));
 
-    //debugging
+    // Log the status and response body for debugging
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
+      // Cast the json response to Map<String, dynamic>
       final Map<String, dynamic> jsonResponse =
           json.decode(response.body) as Map<String, dynamic>;
 
@@ -130,10 +131,8 @@ class UserController {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(userInfo.toJson()),
       );
-
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
-
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         return responseData['status'] == 'success';

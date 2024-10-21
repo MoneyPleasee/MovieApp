@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _fnameController = TextEditingController();
   final TextEditingController _lnameController = TextEditingController();
+  final TextEditingController _imageURL = TextEditingController();
   final LoginController _loginController = LoginController();
 
   Future<void> _login() async {
@@ -37,7 +38,8 @@ class _LoginPageState extends State<LoginPage> {
           _usernameController.text,
           _fnameController.text,
           _lnameController.text,
-          _emailController.text);
+          _emailController.text,
+          _imageURL.text);
 
       widget.onLogin(_usernameController.text);
     } else {

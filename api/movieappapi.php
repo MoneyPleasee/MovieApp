@@ -132,7 +132,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET[
 if (isset($_GET['username'])) {
     $username = $conn->real_escape_string($_GET['username']);
     
-    $sql = "SELECT username,fname,lname,email FROM users WHERE username = ?";
+    $sql = "SELECT username,fname,lname,email,imageURL FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -158,27 +158,24 @@ if (isset($_GET['username'])) {
 function updateUserInfo($conn) {
     $post_data = file_get_contents("php://input");
     $request = json_decode($post_data);
-
     $username = $request->username ?? '';
     $fname = $request->fname ?? '';
     $lname = $request->lname ?? '';
     $email = $request->email ?? '';
-
-    $sql = "UPDATE users SET fname = ?, lname = ?, email = ? WHERE username = ?";
+    $imageURL  = $request->imageURL ?? '';
+    $sql = "UPDATE users SET fname = ?, lname = ?, email = ?, imageURL = ? WHERE username = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $fname, $lname, $email, $username);
-
+    $stmt->bind_param("sssss", $fname, $lname, $email, $imageURL,$username);
     if ($stmt->execute()) {
         $response = array('status' => 'success', 'message' => 'Profile updated successfully');
     } else {
         $response = array('status' => 'error', 'message' => 'Profile update failed: ' . $stmt->error);
     }
-
     echo json_encode($response);
     $stmt->close();
-
     exit;
 }
+
 
 $conn->close();
 ?>
