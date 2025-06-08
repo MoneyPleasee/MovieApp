@@ -8,8 +8,6 @@ import 'view/loginpage.dart';
 import 'view/bottomnav.dart';
 import 'view/profilepage.dart';
 
-//flutter run -d chrome --web-browser-flag "--disable-web-security"
-
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -27,18 +25,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final UserController controller = UserController();
   UserInfo? userInfo;
-  int _selectedIndex =
-      0; // Track the currently selected bottom navigation index
-  bool isLoggedIn = false; // Track if the user is logged in
-
-  // List of screens to navigate between when logged in
+  int _selectedIndex = 0;
+  bool isLoggedIn = false;
 
   @override
   void initState() {
     super.initState();
   }
 
-  // Handle bottom navigation bar item taps
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -60,30 +54,40 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/profile': (context) => ProfileApp(userInfo: userInfo, onLogout: _handleLogout),
+      },
       title: 'Movie Review App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.black,
       ),
-      // Show login page if not logged in, otherwise show main app
-      //debugShowCheckedModeBanner: false, //UNCOMMENT THIS TO REMOVE DEBUG BANNER
       home: isLoggedIn ? _buildMainPage() : LoginPage(onLogin: islogin),
     );
   }
 
-  // Build the main page with bottom navigation bar
   Widget _buildMainPage() {
     final List<Widget> _screens = [
       HomeScreen(),
       SavedMoviesScreen(),
-      ProfileApp(userInfo: userInfo), // Now this accepts a nullable UserInfo
+      ProfileApp(userInfo: userInfo, onLogout: _handleLogout),
     ];
     return Scaffold(
-      body: _screens[_selectedIndex], // Display the selected screen
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavBar(
         selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped, // Handle bottom navigation taps
+        onItemTapped: _onItemTapped,
       ),
     );
+  }
+
+  void _handleLogout() {
+    setState(() {
+      isLoggedIn = false;
+      userInfo = null;
+    });
+
+    // Optionally, also clear the UserModel
+    Provider.of<UserModel>(context, listen: false).logout();
   }
 }

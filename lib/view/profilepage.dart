@@ -7,8 +7,9 @@ import 'package:movieapp/view/editprofilepage.dart';
 // Main app widget
 class ProfileApp extends StatelessWidget {
   final UserInfo? userInfo;
+  final VoidCallback onLogout;
 
-  ProfileApp({required this.userInfo});
+  const ProfileApp({super.key, required this.userInfo, required this.onLogout});
   @override
   Widget build(BuildContext context) {
     String username = Provider.of<UserModel>(context).username;
@@ -22,7 +23,8 @@ class ProfileApp extends StatelessWidget {
       ),
       home: ProfilePage(
           username: username,
-          userInfo: userInfo), // Load ProfilePage as the home screen
+          userInfo: userInfo, // Load ProfilePage as the home screen
+          onLogout: onLogout,)
     );
   }
 }
@@ -31,7 +33,14 @@ class ProfileApp extends StatelessWidget {
 class ProfilePage extends StatefulWidget {
   final String username;
   final UserInfo? userInfo;
-  ProfilePage({required this.username, required this.userInfo});
+  final VoidCallback onLogout;
+
+
+  ProfilePage({
+    required this.username,
+    required this.userInfo,
+    required this.onLogout,
+  });
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -171,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Add logout functionality when backend development begins
+                widget.onLogout();
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[400]),
