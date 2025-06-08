@@ -7,7 +7,7 @@ respected parties. This application is a timeless form of media that advocates f
 Angelite spirit and to embody a true Angelite’s core values with the practice through the
 means of a media and entertainment software.
 
-Demo Video: https://youtu.be/oAR0WnyVDJs
+Demo Video: https://youtu.be/oAR0WnyVDJs <br />
 Documentation: https://docs.google.com/document/d/1RuXJVykqpPLgYOpExcaOOm8qCcev2IR8476loEbr_BA/edit?usp=sharing
 
 Developers: <br />
