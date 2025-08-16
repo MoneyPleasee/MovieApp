@@ -8,7 +8,7 @@ CREATE TABLE users (
     password VARCHAR(255),
     email VARCHAR(255),
     fname VARCHAR(255),
-    lname VARCHAR(255)
+    lname VARCHAR(255),
     imageURL VARCHAR(255)
 );
 
