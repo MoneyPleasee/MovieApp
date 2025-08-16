@@ -70,14 +70,14 @@ class UserInfo {
   final String fname;
   final String lname;
   final String email;
-  final String imageURL;
+  final String? imageURL;
 
   UserInfo({
     required this.username,
     required this.fname,
     required this.lname,
     required this.email,
-    required this.imageURL,
+    this.imageURL,
   });
 
   Map<String, dynamic> toJson() {
@@ -86,40 +86,58 @@ class UserInfo {
       'fname': fname,
       'lname': lname,
       'email': email,
-      'image_url': imageURL,
+      'imageURL': imageURL,
     };
   }
 
   factory UserInfo.fromJson(Map<String, dynamic> json) {
     return UserInfo(
-        username: json['username'],
-        fname: json['fname'],
-        lname: json['lname'],
-        email: json['email'],
-        imageURL: json['imageURL']);
+      username: json['username'] ?? '',
+      fname: json['fname'] ?? '',
+      lname: json['lname'] ?? '',
+      email: json['email'] ?? '',
+      imageURL: json['imageURL'] ?? '',
+    );
   }
 }
 
-class UserModel with ChangeNotifier {
+class UserModel extends ChangeNotifier {
   String _username = '';
   String _fname = '';
   String _lname = '';
-  String __email = '';
+  String _email = '';
   String _imageURL = '';
 
+  // Getters
   String get username => _username;
   String get fname => _fname;
   String get lname => _lname;
-  String get email => __email;
+  String get email => _email;
   String get imageURL => _imageURL;
 
-  void setUser(String username, String fname, String lname, String email,
-      String imageURL) {
+  // Setter for full user data
+  void setUser(String username, String fname, String lname, String email, String imageURL) {
     _username = username;
     _fname = fname;
     _lname = lname;
-    __email = email;
+    _email = email;
     _imageURL = imageURL;
+    notifyListeners(); // Tells widgets that rely on this model to rebuild
+  }
+
+  // Simpler setter for just username (optional use)
+  void setUsername(String username) {
+    _username = username;
     notifyListeners();
+  }
+
+  // Logout clears all fields
+  void logout() {
+    _username = '';
+    _fname = '';
+    _lname = '';
+    _email = '';
+    _imageURL = '';
+    notifyListeners(); // Important: ensures UI updates
   }
 }

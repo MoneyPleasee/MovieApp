@@ -68,6 +68,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             SizedBox(height: 32),
             ElevatedButton(
               onPressed: () async {
+                // Print the imageURL to verify it's updated
+                print("Updated Image URL: ${_imageURLController.text}");
+
                 // Update user info
                 UserInfo updatedInfo = UserInfo(
                   username: widget.userInfo.username,

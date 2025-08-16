@@ -7,7 +7,7 @@ class LoginController {
   Future<bool> login(User user) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/movieappapi.php?action=login'),
+        Uri.parse('http://10.0.2.2/movieappapi.php?action=login'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(user.toJson()),
       );
@@ -36,7 +36,7 @@ class SignUpController {
   Future<bool> signUp(User user) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost/movieappapi.php?action=register'),
+        Uri.parse('http://10.0.2.2/movieappapi.php?action=register'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(user.toJson()),
       );
@@ -65,7 +65,7 @@ class MovieController {
   Future<List<Movie>> fetchMovies() async {
     try {
       final response = await http.get(
-        Uri.parse('http://localhost/movieappapi.php?fetch_movies=true'),
+        Uri.parse('http://10.0.2.2/movieappapi.php?fetch_movies=true'),
       );
 
       // Log the response for debugging
@@ -96,7 +96,7 @@ class MovieController {
 }
 
 class UserController {
-  final String apiUrl = 'http://localhost/movieappapi.php';
+  final String apiUrl = 'http://10.0.2.2/movieappapi.php';
 
   Future<UserInfo?> fetchUserByUsername(String username) async {
     final response = await http.get(Uri.parse('$apiUrl?username=$username'));

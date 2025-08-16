@@ -7,8 +7,9 @@ import 'package:movieapp/view/editprofilepage.dart';
 // Main app widget
 class ProfileApp extends StatelessWidget {
   final UserInfo? userInfo;
+  final VoidCallback onLogout;
 
-  ProfileApp({required this.userInfo});
+  const ProfileApp({super.key, required this.userInfo, required this.onLogout});
   @override
   Widget build(BuildContext context) {
     String username = Provider.of<UserModel>(context).username;
@@ -22,7 +23,8 @@ class ProfileApp extends StatelessWidget {
       ),
       home: ProfilePage(
           username: username,
-          userInfo: userInfo), // Load ProfilePage as the home screen
+          userInfo: userInfo, // Load ProfilePage as the home screen
+          onLogout: onLogout,)
     );
   }
 }
@@ -31,7 +33,14 @@ class ProfileApp extends StatelessWidget {
 class ProfilePage extends StatefulWidget {
   final String username;
   final UserInfo? userInfo;
-  ProfilePage({required this.username, required this.userInfo});
+  final VoidCallback onLogout;
+
+
+  ProfilePage({
+    required this.username,
+    required this.userInfo,
+    required this.onLogout,
+  });
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -41,6 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController _firstnameController;
   late TextEditingController _lastnameController;
   late TextEditingController _emailController;
+  late TextEditingController _imageURLController;
 
   //late TextEditingController _imageURL;
   String _profileImagePath = 'lib/assets/defaultimage.jpg';
@@ -51,6 +61,8 @@ class _ProfilePageState extends State<ProfilePage> {
     _firstnameController = TextEditingController(text: widget.userInfo?.fname);
     _lastnameController = TextEditingController(text: widget.userInfo?.lname);
     _emailController = TextEditingController(text: widget.userInfo?.email);
+    _imageURLController =
+        TextEditingController(text: widget.userInfo?.imageURL);
   }
 
   @override
@@ -58,6 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _firstnameController.dispose();
     _lastnameController.dispose();
     _emailController.dispose();
+    _imageURLController.dispose();
     super.dispose();
   }
 
@@ -102,12 +115,12 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: (widget.userInfo?.imageURL != null &&
-                          widget.userInfo!.imageURL.startsWith('http'))
-                      ? NetworkImage(widget.userInfo!
-                          .imageURL) // Use network image if URL is provided and valid
+                  backgroundImage: (_imageURLController.text.isNotEmpty &&
+                          _imageURLController.text.startsWith('http'))
+                      ? NetworkImage(
+                          _imageURLController.text) // Updated URL after edit
                       : AssetImage(_profileImagePath)
-                          as ImageProvider, // Fallback to default image
+                          as ImageProvider, // Fallback image
                   backgroundColor: Colors.grey,
                 ),
               ],
@@ -133,6 +146,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     _firstnameController.text = updatedInfo.fname;
                     _lastnameController.text = updatedInfo.lname;
                     _emailController.text = updatedInfo.email;
+                    _imageURLController.text = updatedInfo.imageURL;
+                    _profileImagePath = updatedInfo.imageURL.isNotEmpty
+                        ? updatedInfo.imageURL
+                        : 'lib/assets/defaultimage.jpg'; // Fallback to default if URL is empty
                   });
                 }
               },
@@ -163,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Add logout functionality when backend development begins
+                widget.onLogout();
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[400]),
